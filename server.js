@@ -18,7 +18,7 @@ conn.once("open", ()=>{
 })
 
 const notesRoute = require("./routes/notes");
-const managersRoute = require("./routes/managers");
+// const managersRoute = require("./routes/managers");
 const loginRoute = require("./routes/login");
 
 app.use('/notes', notesRoute);
