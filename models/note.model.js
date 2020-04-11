@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const noteSchema = new Schema({
     heading: {type: String, required: true},
     message: {type: String, required: true},
-    manager: {type:String, required: true}
+    manager: {type:String},
 },{
     timestamps: true
 })

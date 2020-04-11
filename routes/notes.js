@@ -1,49 +1,50 @@
 const router = require("express").Router();
-let Notes = require("../models/note.model");
+const login = require("./login")
+const Notes = require("../models/note.model");
 
-router.route('/').get((req, res) => {
+router.get('/', (req, res) => {
     Notes.find()
         .then (notes => res.json(notes))
-        .catch(err => res.status(400).json(`Error: ${err}`));
+        .catch(err => res.sendStatus(400));
 });
 
-router.route('/add').post((req,res) => {
+router.post('/add', login.authenticateToken, (req,res) => {
     const heading = req.body.heading;
     const message = req.body.message;
-    const manager = req.body.manager;
+    const manager = req.data.fullName;
     newNote = new Notes({
         heading,
         message,
         manager
     })
     newNote.save()
-        .then(() => res.json("Note Added Successfully!"))
-        .catch(err => res.status(400).json(`Error: ${err}`));
+        .then(() => res.json(newNote))
+        .catch(err => res.sendStatus(400));
 })
 
-router.route('/:id').get((req, res)=>{
+router.get('/:id', (req, res)=>{
     Notes.findById(req.params.id)
         .then(exercise => res.json(exercise))
-        .catch(err => res.status(400).json(`Error: ${err}`));
+        .catch(err => res.sendStatus(400));
 })
 
-router.route('/:id').delete((req, res)=>{
+router.delete('/:id', login.authenticateToken, (req, res)=>{
     Notes.findByIdAndDelete(req.params.id)
-        .then(exercise => res.json("Note Deleted!"))
-        .catch(err => res.status(400).json(`Error: ${err}`));
+        .then(note => res.json("Note Deleted!"))
+        .catch(err => res.sendStatus(400));
 })
 
-router.route("/update/:id").post((req, res)=>{
+router.post("/update/:id", login.authenticateToken, (req, res)=>{
     Notes.findById(req.params.id)
         .then(note => {
             note.heading = req.body.heading;
             note.message = req.body.message;
-            note.manager = req.body.manager;
+            note.manager = req.data.fullName;
             note.save()
                 .then(()=>res.json("Note Updated Successfully"))
-                .catch(err => res.status(400).json(`Error: ${err}`));
+                .catch(err => res.sendStatus(400));
         })
-        .catch(err => res.status(400).json(`Error: ${err}`));
+        .catch(err => res.sendStatus(400));
 })
 
 module.exports = router;

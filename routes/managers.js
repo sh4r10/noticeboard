@@ -2,7 +2,7 @@ const router = require("express").Router();
 const crypto = require("crypto");
 require("dotenv").config();
 const secret = process.env.SECRET ;
-let Manager = require("../models/manager.model");
+const Manager = require("../models/manager.model");
 
 router.route('/').get((req, res) => {
     Manager.find()
