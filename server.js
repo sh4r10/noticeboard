@@ -22,7 +22,7 @@ const notesRoute = require("./routes/notes");
 const loginRoute = require("./routes/login");
 
 app.use('/notes', notesRoute);
-app.use('/managers', managersRoute);
+// app.use('/managers', managersRoute);
 app.use("/login", loginRoute.router);
 
 app.listen(port, () => console.log(`Server is running on Port ${port}`));
