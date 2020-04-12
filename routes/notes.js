@@ -27,7 +27,7 @@ router.post('/add', login.authenticateToken, (req,res) => {
         .then(() => {
             Subscribers.find({} , (err, subs) => {
                 subs.forEach(sub => {
-                    webpush.sendNotification(sub, payload);
+                    webpush.sendNotification(sub, payload).catch(err => console.error(err));
                 })
                 console.log("Notifications sent!");
             });
