@@ -17,12 +17,6 @@ router.post('/add', login.authenticateToken, (req,res) => {
 
     const payload = JSON.stringify({title: "heallo meat head"});
 
-    Subscribers.find({} , (err, subs) => {
-        subs.forEach(sub => {
-            webpush.sendNotification(sub, payload);
-        })
-    })
-
     newNote = new Notes({
         heading,
         message,
@@ -30,7 +24,14 @@ router.post('/add', login.authenticateToken, (req,res) => {
     })
 
     newNote.save()
-        .then(() => res.json(newNote))
+        .then(() => {
+            Subscribers.find({} , (err, subs) => {
+                subs.forEach(sub => {
+                    webpush.sendNotification(sub, payload);
+                })
+            });
+            res.json(newNote)
+        })
         .catch(err => res.sendStatus(400));
 })
 

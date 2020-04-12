@@ -2,15 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const Subscribers = require("./models/subscription.model");
-const webpush = require("web-push");
+// const Subscribers = require("./models/subscription.model");
+// const webpush = require("web-push");
 
-const payload = JSON.stringify({title: "heallo meat head"});
-Subscribers.find({} , (err, subs) => {
-    subs.forEach(sub => {
-        webpush.sendNotification(sub, payload);
-    })
-})
+// const payload = JSON.stringify({title: "heallo meat head"});
+// Subscribers.find({} , (err, subs) => {
+//     subs.forEach(sub => {
+//         webpush.sendNotification(sub, payload);
+//     })
+// })
 
 const app = express();
 const port = process.env.PORT || 5000;
