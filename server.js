@@ -6,6 +6,8 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(express.static("http://localhost:3000"));
+
 app.use(cors());
 app.use(express.json());
 
@@ -20,9 +22,11 @@ conn.once("open", ()=>{
 const notesRoute = require("./routes/notes");
 // const managersRoute = require("./routes/managers");
 const loginRoute = require("./routes/login");
+const subscribeRoute = require("./routes/subscribe");
 
 app.use('/notes', notesRoute);
 // app.use('/managers', managersRoute);
 app.use("/login", loginRoute.router);
+app.use("/subscribe", subscribeRoute)
 
 app.listen(port, () => console.log(`Server is running on Port ${port}`));

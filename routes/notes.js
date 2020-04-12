@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const login = require("./login")
 const Notes = require("../models/note.model");
+const Subscribers = require("../models/subscription.model");
+const webpush = require("web-push");
 
 router.get('/', (req, res) => {
     Notes.find()
@@ -12,11 +14,21 @@ router.post('/add', login.authenticateToken, (req,res) => {
     const heading = req.body.heading;
     const message = req.body.message;
     const manager = req.data.fullName;
+
+    const payload = JSON.stringify({title: "heallo meat head"});
+
+    Subscribers.find({} , (err, subs) => {
+        subs.forEach(sub => {
+            webpush.sendNotification(sub, payload);
+        })
+    })
+
     newNote = new Notes({
         heading,
         message,
         manager
     })
+
     newNote.save()
         .then(() => res.json(newNote))
         .catch(err => res.sendStatus(400));
