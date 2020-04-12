@@ -15,7 +15,7 @@ router.post('/add', login.authenticateToken, (req,res) => {
     const message = req.body.message;
     const manager = req.data.fullName;
 
-    const payload = JSON.stringify({title: "heallo meat head"});
+    const payload = JSON.stringify({title: heading, message: message, manager: manager});
 
     newNote = new Notes({
         heading,
